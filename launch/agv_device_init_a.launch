@@ -1,0 +1,35 @@
+<launch>
+
+  <!-- Base Controller -->
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node_base_controller" output="screen">
+    <param name="port" value="/dev/ttyACM0"/>
+    <param name="baud" value="57600"/>
+  </node>
+
+  <!-- IMU -->
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node_imu" output="screen">
+    <param name="port" value="/dev/ttyACM1"/>
+    <param name="baud" value="57600"/>
+  </node>
+
+  <!-- RPLidar -->
+  <include file="$(find rplidar_ros)/launch/rplidar.launch"/>
+
+
+  <!-- Static Transforms -->
+  <node pkg="tf" type="static_transform_publisher" name="base_footprint_odom" args="0 0 0 0 0 0 odom base_footprint 100"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint" args="0 0 0 0 0 0 base_footprint base_link 100"/>
+     
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="-0.1 0 0.1 0 0 0 base_link laser 100"/>
+
+
+  <!-- Odometry Script -->
+  <node pkg="agv" type="current_odom.py" name="odometry_node" output="screen" />
+
+  <!-- EKF Localization and Laser Odometry -->
+  <include file="$(find rf2o_laser_odometry)/launch/rf2o_laser_odometry.launch"/>  
+  <!-- <include file="$(find robot_localization)/launch/agv_ekf_localization.launch"/> -->
+  <include file="$(find robot_localization)/launch/agv_ekf_localization_turtlebot.launch"/>
+
+</launch>

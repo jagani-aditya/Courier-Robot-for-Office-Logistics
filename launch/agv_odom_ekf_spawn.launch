@@ -1,0 +1,12 @@
+<launch>
+<include file="$(find rf2o_laser_odometry)/launch/rf2o_laser_odometry.launch"/>
+
+<node pkg="agv" type="current_odom.py" name="current_odom"/>
+
+<include file="$(find robot_localization)/launch/agv_ekf_localization_turtlebot.launch"/>
+
+<!-- <include file="$(find robot_localization)/launch/agv_ekf_localization.launch"/> -->
+
+<include file="$(find agv)/launch/agv_spawn.launch"/>
+
+</launch>

@@ -1,0 +1,34 @@
+<launch>
+    <!-- Map server -->
+    <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+    <arg name="map_file" default="$(find agv)/maps/house.yaml"/>
+    <arg name="open_rviz" default="true"/>
+    <arg name="amcl_topic" default="filtered"/>
+    <arg name="odom_topic" default="odometery/filtered1"/>
+    <!-- <arg name="map_file" default="$(find agv)/maps/ifr_office_map.yaml"/> -->
+    <!-- <node pkg="map_server" name="map_server"  type="map_server" args="$(arg map_file)" />
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)" />
+  </include> -->
+    <!-- AMCL used for localization -->
+    <include file="$(find robot_localization)/launch/agv_ekf_localization.launch"/>
+    <include file="$(find robot_localization)/launch/agv_amcl_ekf_localization.launch"/>
+    <include file="$(find agv)/launch/agv_amcl.launch" />
+
+<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <rosparam file="$(find agv)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find agv)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find agv)/param/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find agv)/param/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find agv)/param/base_local_planner_default_params.yaml" command="load" />
+        <rosparam file="$(find agv)/param/move_base_params.yaml" command="load" />
+        <!-- <remap from="amcl_pose" to="$(arg amcl_topic)"/> -->
+        <!-- <remap from="odom" to="$(arg odom_topic)"/> -->
+</node>
+ 
+          <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find turtlebot3_navigation)/rviz/turtlebot3_navigation.rviz"/>
+   </group>
+</launch>

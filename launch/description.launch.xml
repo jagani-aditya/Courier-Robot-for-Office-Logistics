@@ -1,0 +1,50 @@
+<launch>
+
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="false"/>
+  <arg name="gui" default="false"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="robot_description"
+    command="$(find xacro)/xacro --inorder '$(find agv)/urdf/agv.urdf.xacro'" />
+  <param name="use_gui" value="true"/>
+
+  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    args="-urdf -model agv -param robot_description -y 0.5 " />
+
+  <node pkg="robot_state_publisher" name="robot_state_publisher" type="robot_state_publisher" output="screen" respawn="false"/>
+
+  <node name="static_transform_base_to_laser" pkg="tf" type="static_transform_publisher" args="-0.2 0 0.0 0 0 0 base_link laser 100" />
+  <!-- <node name="static_transform_odom_to_base" pkg="tf" type="static_transform_publisher" args="-0 0 0.0 0 0 0  odom base_footprint  100" /> -->
+  <!-- <node name="static_transform_base_to_imu" pkg="tf" type="static_transform_publisher" args="-0.1 0 0.0 0 0 0 base_footprint imu 100" /> -->
+  
+    
+   
+  <!-- Robot State Publisher-->
+  <!-- <arg name="use_tf_static" default="false"/>  -->
+  <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+          <param name="use_tf_static" value="$(arg use_tf_static)"/>
+  </node> -->
+  <!--Static Transformer-->
+  <!-- <node name="static_transformer_map2odom" pkg="tf" type="static_transform_publisher" args="0.0 0.0 0.0 0.0 0.0 0.0 map odom 100 " /> -->
+  <!-- <node name="static_transformer_odom2baset" pkg="tf" type="static_transform_publisher" args="0.0 0.0 0.0 0.0 0.0 0.0 odom base_link 100 " /> -->
+
+   
+  <!-- Run Rviz -->
+  <!--node name="rviz" pkg="rviz" type="rviz" required="true"/-->
+
+</launch>

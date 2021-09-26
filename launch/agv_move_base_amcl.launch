@@ -1,0 +1,21 @@
+<launch>
+    <!-- Map server -->
+    <!-- <arg name="map_file" default="$(find agv)/maps/house.yaml"/> -->
+    <arg name="map_file" default="$(find agv)/maps/ifr_office_map.yaml"/>
+    <node pkg="map_server" name="map_server"  type="map_server" args="$(arg map_file)" />
+
+    <!-- AMCL used for localization -->
+    <include file="$(find agv)/launch/agv_amcl.launch" />
+
+<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <rosparam file="$(find agv)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find agv)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find agv)/param/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find agv)/param/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find agv)/param/base_local_planner_default_params.yaml" command="load" />
+        <rosparam file="$(find agv)/param/move_base_params.yaml" command="load" />
+
+
+        
+    </node>
+</launch>
