@@ -27,19 +27,31 @@ This project is an implementation of navigation stack configured with real hardw
 ## Implementation
 1. To map your environment, execute the steps in the catkin_ws directory
 
+
 ```$ catkin_make```
+
 ```$ source devel/setup.bash```
+
 ```$ roslaunch agv agv_odom_ekf_spawn.launch```
+
 ```$ roslaunch agv agv_device_init.launch```
+
 ```$ roslaunch agv agv_hector.launch```
+
 ```$ rosrun teleop_twist_keyboard teleop_twist_keyboard.py ```
+
 
 
 2. To navigate the robot in your environment, execute the steps in the catkin_ws directory
 
 ```$ catkin_make```
+
 ```$ source devel/setup.bash```
+
 ```$ roslaunch agv agv_odom_ekf_spawn.launch```
+
 ```$ roslaunch agv agv_device_init.launch```
+
 ```$ roslaunch agv agv_agv_move_base_amcl_turtlebot.launch```
+
 
