@@ -3,7 +3,9 @@
 ## Project Desciption 
 This project is an implementation of navigation stack configured with real hardware. The aim of this project was to develop a prototype of a courier robot that could be used for logistics of documents in an office space.
 
+<p align="center">
 ![Simulation 1](/Media/AMR_Video.gif)
+</p>
 
 ## Main Modules 
 * Simulation of Turtlebot
