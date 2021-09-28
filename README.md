@@ -1,7 +1,11 @@
-# Courier-Robot-for-Office-Logistics
+# Courier Robot for Office Logistics
 
 ## Project Desciption 
 This project is an implementation of navigation stack configured with real hardware. The aim of this project was to develop a prototype of a courier robot that could be used for logistics of documents in an office space.
+
+![Simulation 1](/Media/Simulation1.gif)
+
+![Simulation 1](/Media/Simulation1.gif)
 
 ## Main Modules 
 * Simulation of Turtlebot
